@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Controle Financeiro</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <h1>Controle Financeiro</h1>
+            <ul>
+                <li class="active" data-page="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    Dashboard
+                </li>
+                <li data-page="daily">
+                    <i class="fas fa-calendar-day"></i>
+                    Visão Diária
+                </li>
+                <li data-page="monthly">
+                    <i class="fas fa-calendar-alt"></i>
+                    Visão Mensal
+                </li>
+                <li data-page="yearly">
+                    <i class="fas fa-calendar"></i>
+                    Visão Anual
+                </li>
+                <li data-page="transactions">
+                    <i class="fas fa-exchange-alt"></i>
+                    Transações
+                </li>
+                <li data-page="cards">
+                    <i class="fas fa-credit-card"></i>
+                    Cartões
+                </li>
+                <li data-page="investments">
+                    <i class="fas fa-piggy-bank"></i>
+                    Investimentos
+                </li>
+                <li data-page="goals">
+                    <i class="fas fa-bullseye"></i>
+                    Metas
+                </li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <section id="dashboard" class="page active">
+                <h2>Dashboard</h2>
+                <div class="cards">
+                    <div class="card">
+                        <h3>Saldo Total</h3>
+                        <p class="balance">R$ 0,00</p>
+                    </div>
+                    <div class="card">
+                        <h3>Receitas</h3>
+                        <p class="income">R$ 0,00</p>
+                    </div>
+                    <div class="card">
+                        <h3>Despesas</h3>
+                        <p class="expenses">R$ 0,00</p>
+                    </div>
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3>Evolução do Saldo</h3>
+                        <canvas id="balanceChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Distribuição de Gastos</h3>
+                        <canvas id="expensesChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="daily" class="page">
+                <h2>Visão Diária</h2>
+                <!-- Conteúdo da visão diária será adicionado depois -->
+            </section>
+
+            <section id="monthly" class="page">
+                <h2>Visão Mensal</h2>
+                <!-- Conteúdo da visão mensal será adicionado depois -->
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
