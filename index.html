@@ -44,76 +44,167 @@
         <!-- Conteúdo Principal -->
         <main class="content">
             <!-- Dashboard -->
-            <section id="dashboard" class="page active">
-                <div class="dashboard-header">
-                    <h2>Dashboard</h2>
-                    <!-- Barra de Ações Principal -->
-                    <div class="main-actions">
-                        <button class="action-btn primary" onclick="openTransactionModal('expense')">
-                            <i class="fas fa-minus-circle"></i> Nova Despesa
+          <section id="dashboard" class="page active">
+    <div class="dashboard-header">
+        <h2>Dashboard</h2>
+        <!-- Barra de Ações Principal -->
+        <div class="main-actions">
+            <button class="action-btn primary" onclick="openTransactionModal('expense')">
+                <i class="fas fa-minus-circle"></i> Nova Despesa
+            </button>
+            <button class="action-btn success" onclick="openTransactionModal('income')">
+                <i class="fas fa-plus-circle"></i> Nova Receita
+            </button>
+            <button class="action-btn warning" onclick="openCreditCardExpenseModal()">
+                <i class="fas fa-credit-card"></i> Despesa no Cartão
+            </button>
+            <button class="action-btn info" onclick="openInvestmentModal()">
+                <i class="fas fa-chart-line"></i> Novo Investimento
+            </button>
+            <button class="action-btn secondary" onclick="openGoalModal()">
+                <i class="fas fa-bullseye"></i> Nova Meta
+            </button>
+        </div>
+    </div>
+
+                <!-- Visão Geral -->
+                <div class="dashboard-view active" id="overview">
+                    <div class="action-buttons">
+<!-- Botões de Ação Rápida -->
+<div class="quick-actions">
+    <button class="action-btn" onclick="openTransactionModal('expense')">
+        <i class="fas fa-minus-circle"></i> Nova Despesa
+    </button>
+    <button class="action-btn" onclick="openTransactionModal('income')">
+        <i class="fas fa-plus-circle"></i> Nova Receita
+    </button>
+    <button class="action-btn" onclick="openCreditCardExpenseModal()">
+        <i class="fas fa-credit-card"></i> Despesa no Cartão
+    </button>
+</div>
+                        <button class="action-btn primary" onclick="openTransactionModal()">
+                            <i class="fas fa-plus"></i> Nova Transação
                         </button>
-                        <button class="action-btn success" onclick="openTransactionModal('income')">
-                            <i class="fas fa-plus-circle"></i> Nova Receita
+                        <button class="action-btn" onclick="openCardModal()">
+                            <i class="fas fa-credit-card"></i> Novo Cartão
                         </button>
-                        <button class="action-btn warning" onclick="openCreditCardExpenseModal()">
-                            <i class="fas fa-credit-card"></i> Despesa no Cartão
+                        <button class="action-btn" onclick="openInvestmentModal()">
+                            <i class="fas fa-piggy-bank"></i> Novo Investimento
                         </button>
-                        <button class="action-btn info" onclick="openInvestmentModal()">
-                            <i class="fas fa-chart-line"></i> Novo Investimento
-                        </button>
-                        <button class="action-btn secondary" onclick="openGoalModal()">
+                        <button class="action-btn" onclick="openGoalModal()">
                             <i class="fas fa-bullseye"></i> Nova Meta
                         </button>
                     </div>
+
+                    <div class="cards">
+                        <div class="card">
+                            <h3>Patrimônio Total</h3>
+                            <p class="balance">R$ 0,00</p>
+                            <small class="trend positive">+5% em relação ao período anterior</small>
+                        </div>
+
+                        <div class="card">
+                            <h3>Receitas</h3>
+                            <p class="income">R$ 0,00</p>
+                            <small class="trend positive">+3% em relação ao período anterior</small>
+                        </div>
+
+                        <div class="card">
+                            <h3>Despesas</h3>
+                            <p class="expenses">R$ 0,00</p>
+                            <small class="trend negative">+2% em relação ao período anterior</small>
+                        </div>
+
+                        <div class="card">
+                            <h3>Investimentos</h3>
+                            <p class="investments">R$ 0,00</p>
+                            <small class="trend positive investments-trend">+8% total</small>
+                        </div>
+                    </div>
+
+                    <div class="charts-container">
+                        <div class="chart-card">
+                            <h3>Evolução do Patrimônio</h3>
+                            <canvas id="balanceChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Distribuição de Gastos</h3>
+                            <canvas id="expensesChart"></canvas>
+                        </div>
+                    </div>
                 </div>
-                <div class="cards">
-                    <div class="card">
-                        <h3>Patrimônio Total</h3>
-                        <p class="balance">R$ 0,00</p>
-                        <small class="trend positive">+5% em relação ao período anterior</small>
+                <!-- Visão Diária -->
+                <div class="dashboard-view" id="daily">
+                    <div class="date-navigator">
+                        <button class="nav-btn" onclick="previousDay()">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h3 id="currentDate">Hoje</h3>
+                        <button class="nav-btn" onclick="nextDay()">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
 
-                    <div class="card">
-                        <h3>Receitas</h3>
-                        <p class="income">R$ 0,00</p>
-                        <small class="trend positive">+3% em relação ao período anterior</small>
+                    <div class="cards">
+                        <div class="card">
+                            <h3>Saldo do Dia</h3>
+                            <p class="balance" id="dailyBalance">R$ 0,00</p>
+                        </div>
+                        <div class="card">
+                            <h3>Receitas Hoje</h3>
+                            <p class="income" id="dailyIncome">R$ 0,00</p>
+                        </div>
+                        <div class="card">
+                            <h3>Despesas Hoje</h3>
+                            <p class="expenses" id="dailyExpenses">R$ 0,00</p>
+                        </div>
                     </div>
 
-                    <div class="card">
-                        <h3>Despesas</h3>
-                        <p class="expenses">R$ 0,00</p>
-                        <small class="trend negative">+2% em relação ao período anterior</small>
-                    </div>
-
-                    <div class="card">
-                        <h3>Investimentos</h3>
-                        <p class="investments">R$ 0,00</p>
-                        <small class="trend positive investments-trend">+8% total</small>
+                    <div class="transactions-list">
+                        <h3>Transações de Hoje</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Hora</th>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Valor</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dailyTransactionsTable">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <div class="charts-container">
-                    <div class="chart-card">
-                        <h3>Evolução do Patrimônio</h3>
-                        <canvas id="balanceChart"></canvas>
+                <!-- Visão Mensal -->
+                <div class="dashboard-view" id="monthly">
+                    <div class="month-navigator">
+                        <button class="nav-btn" onclick="previousMonth()">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h3 id="currentMonth">Janeiro 2024</h3>
+                        <button class="nav-btn" onclick="nextMonth()">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
-                    <div class="chart-card">
-                        <h3>Distribuição de Gastos</h3>
-                        <canvas id="expensesChart"></canvas>
-                    </div>
-                </div>
-            </section>
 
-            <!-- Seção de Cartões -->
-            <section id="cards" class="page">
-                <div class="section-header">
-                    <h2>Cartões</h2>
-                    <button class="action-btn primary" onclick="openCardModal()">
-                        <i class="fas fa-plus"></i> Novo Cartão
-                    </button>
-                </div>
-                <div id="cardsList" class="cards-grid">
-                    <!-- Cards serão inseridos aqui via JavaScript -->
+                    <div class="cards">
+                        <div class="card">
+                            <h3>Total do Mês</h3>
+                            <p class="balance" id="monthlyTotal">R$ 0,00</p>
+                            <small class="comparison">vs. R$ 3.500,00 mês anterior</small>
+                        </div>
+                        <div class="card">
+                            <h3>Receitas do Mês</h3>
+                            <p class="income" id="monthlyIncome">R$ 0,00</p>
+                        </div>
+                        <div class="card">
+                            <h3>Despesas do Mês</h3>
+                            <p class="expenses" id="monthlyExpenses">R$ 0,00</p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -125,6 +216,7 @@
                         <i class="fas fa-plus"></i> Novo Investimento
                     </button>
                 </div>
+
                 <div class="investment-summary">
                     <div class="cards">
                         <div class="card">
@@ -137,8 +229,14 @@
                             <p class="income" id="monthlyReturn">R$ 0,00</p>
                             <small>Mês atual</small>
                         </div>
+                        <div class="card">
+                            <h3>Próximos Vencimentos</h3>
+                            <p class="warning" id="upcomingMaturity">0</p>
+                            <small>Nos próximos 30 dias</small>
+                        </div>
                     </div>
                 </div>
+
                 <div class="investments-list">
                     <table>
                         <thead>
@@ -156,6 +254,19 @@
                     </table>
                 </div>
             </section>
+            <!-- Seção de Cartões -->
+            <section id="cards" class="page">
+                <div class="section-header">
+                    <h2>Cartões</h2>
+                    <button class="action-btn primary" onclick="openCardModal()">
+                        <i class="fas fa-plus"></i> Novo Cartão
+                    </button>
+                </div>
+                <div id="cardsList" class="cards-grid">
+                    <!-- Cards serão inseridos aqui via JavaScript -->
+                </div>
+            </section>
+
             <!-- Seção de Metas -->
             <section id="goals" class="page">
                 <div class="section-header">
@@ -209,48 +320,6 @@
         </div>
     </div>
 
-    <!-- Modal de Cartão de Crédito -->
-    <div id="creditCardExpenseModal" class="modal">
-        <div class="modal-content">
-            <h3>Nova Despesa no Cartão</h3>
-            <form id="creditCardExpenseForm">
-                <div class="form-group">
-                    <label>Cartão:</label>
-                    <select id="creditCardSelect" required>
-                        <!-- Será preenchido via JavaScript -->
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Descrição:</label>
-                    <input type="text" id="ccExpenseDescription" required>
-                </div>
-                <div class="form-group">
-                    <label>Valor:</label>
-                    <input type="number" id="ccExpenseAmount" step="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label>Categoria:</label>
-                    <select id="ccExpenseCategory" required>
-                        <option value="food">Alimentação</option>
-                        <option value="transport">Transporte</option>
-                        <option value="shopping">Compras</option>
-                        <option value="entertainment">Entretenimento</option>
-                        <option value="health">Saúde</option>
-                        <option value="education">Educação</option>
-                        <option value="others">Outros</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Número de Parcelas:</label>
-                    <input type="number" id="ccInstallments" min="1" value="1" required>
-                </div>
-                <div class="button-group">
-                    <button type="submit">Salvar</button>
-                    <button type="button" onclick="closeCreditCardExpenseModal()">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
     <!-- Modal de Investimento -->
     <div id="investmentModal" class="modal">
         <div class="modal-content">
@@ -286,6 +355,22 @@
                     <label>Prazo de Vencimento:</label>
                     <input type="date" id="investmentMaturity" required>
                 </div>
+                <div class="form-group">
+                    <label>Liquidez:</label>
+                    <select id="investmentLiquidity" required>
+                        <option value="daily">Diária</option>
+                        <option value="maturity">No Vencimento</option>
+                        <option value="custom">Carência Personalizada</option>
+                    </select>
+                </div>
+                <div class="form-group" id="customGracePeriod" style="display: none;">
+                    <label>Período de Carência (dias):</label>
+                    <input type="number" id="gracePeriod" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Condições de Resgate:</label>
+                    <textarea id="investmentConditions" rows="3"></textarea>
+                </div>
                 <div class="button-group">
                     <button type="submit">Salvar</button>
                     <button type="button" onclick="closeInvestmentModal()">Cancelar</button>
@@ -293,7 +378,6 @@
             </form>
         </div>
     </div>
-
     <!-- Modal de Cartão -->
     <div id="cardModal" class="modal">
         <div class="modal-content">
@@ -354,10 +438,117 @@
         </div>
     </div>
 
-    <!-- Container de Notificações -->
+    <!-- Notificações -->
     <div id="notificationContainer" class="notification-container"></div>
 
-    <!-- JavaScript -->
     <script src="script.js"></script>
+</body>
+</html>
+    <!-- Modal de Cartão -->
+    <div id="cardModal" class="modal">
+        <div class="modal-content">
+            <h3>Novo Cartão</h3>
+            <form id="cardForm">
+                <div class="form-group">
+                    <label>Nome do Cartão:</label>
+                    <input type="text" id="cardName" required>
+                </div>
+                <div class="form-group">
+                    <label>Limite:</label>
+                    <input type="number" id="cardLimit" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Data de Fechamento:</label>
+                    <input type="number" id="closingDay" min="1" max="31" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit">Salvar</button>
+                    <button type="button" onclick="closeCardModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Meta -->
+    <div id="goalModal" class="modal">
+        <div class="modal-content">
+            <h3>Nova Meta</h3>
+            <form id="goalForm">
+                <div class="form-group">
+                    <label>Descrição da Meta:</label>
+                    <input type="text" id="goalDescription" required>
+                </div>
+                <div class="form-group">
+                    <label>Valor Total:</label>
+                    <input type="number" id="goalAmount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Data Limite:</label>
+                    <input type="date" id="goalDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Categoria:</label>
+                    <select id="goalCategory" required>
+                        <option value="savings">Poupança</option>
+                        <option value="investment">Investimento</option>
+                        <option value="purchase">Compra</option>
+                        <option value="travel">Viagem</option>
+                        <option value="others">Outros</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button type="submit">Salvar</button>
+                    <button type="button" onclick="closeGoalModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notificações -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <script src="script.js"></script>
+<!-- Modal de Despesa no Cartão -->
+<div id="creditCardExpenseModal" class="modal">
+    <div class="modal-content">
+        <h3>Nova Despesa no Cartão</h3>
+        <form id="creditCardExpenseForm">
+            <div class="form-group">
+                <label>Cartão:</label>
+                <select id="creditCardSelect" required>
+                    <!-- Será preenchido via JavaScript -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Descrição:</label>
+                <input type="text" id="ccExpenseDescription" required>
+            </div>
+            <div class="form-group">
+                <label>Valor:</label>
+                <input type="number" id="ccExpenseAmount" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label>Categoria:</label>
+                <select id="ccExpenseCategory" required>
+                    <option value="food">Alimentação</option>
+                    <option value="transport">Transporte</option>
+                    <option value="shopping">Compras</option>
+                    <option value="entertainment">Entretenimento</option>
+                    <option value="health">Saúde</option>
+                    <option value="education">Educação</option>
+                    <option value="others">Outros</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Número de Parcelas:</label>
+                <input type="number" id="ccInstallments" min="1" value="1" required>
+            </div>
+            <div class="button-group">
+                <button type="submit">Salvar</button>
+                <button type="button" onclick="closeCreditCardExpenseModal()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>
