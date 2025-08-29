@@ -1,32 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle Financeiro</title>
+    
+    <!-- CSS e Fontes -->
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <!-- Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
+        <!-- Menu Lateral -->
         <nav class="sidebar">
             <h1>Controle Financeiro</h1>
             <ul>
                 <li class="active" data-page="dashboard">
                     <i class="fas fa-chart-line"></i>
                     Dashboard
-                </li>
-                <li data-page="daily">
-                    <i class="fas fa-calendar-day"></i>
-                    Visão Diária
-                </li>
-                <li data-page="monthly">
-                    <i class="fas fa-calendar-alt"></i>
-                    Visão Mensal
-                </li>
-                <li data-page="yearly">
-                    <i class="fas fa-calendar"></i>
-                    Visão Anual
                 </li>
                 <li data-page="transactions">
                     <i class="fas fa-exchange-alt"></i>
@@ -47,27 +41,60 @@
             </ul>
         </nav>
 
+        <!-- Conteúdo Principal -->
         <main class="content">
+            <!-- Dashboard -->
             <section id="dashboard" class="page active">
-                <h2>Dashboard</h2>
+                <div class="dashboard-header">
+                    <h2>Dashboard</h2>
+                    <!-- Barra de Ações Principal -->
+                    <div class="main-actions">
+                        <button class="action-btn primary" onclick="openTransactionModal('expense')">
+                            <i class="fas fa-minus-circle"></i> Nova Despesa
+                        </button>
+                        <button class="action-btn success" onclick="openTransactionModal('income')">
+                            <i class="fas fa-plus-circle"></i> Nova Receita
+                        </button>
+                        <button class="action-btn warning" onclick="openCreditCardExpenseModal()">
+                            <i class="fas fa-credit-card"></i> Despesa no Cartão
+                        </button>
+                        <button class="action-btn info" onclick="openInvestmentModal()">
+                            <i class="fas fa-chart-line"></i> Novo Investimento
+                        </button>
+                        <button class="action-btn secondary" onclick="openGoalModal()">
+                            <i class="fas fa-bullseye"></i> Nova Meta
+                        </button>
+                    </div>
+                </div>
                 <div class="cards">
                     <div class="card">
-                        <h3>Saldo Total</h3>
+                        <h3>Patrimônio Total</h3>
                         <p class="balance">R$ 0,00</p>
+                        <small class="trend positive">+5% em relação ao período anterior</small>
                     </div>
+
                     <div class="card">
                         <h3>Receitas</h3>
                         <p class="income">R$ 0,00</p>
+                        <small class="trend positive">+3% em relação ao período anterior</small>
                     </div>
+
                     <div class="card">
                         <h3>Despesas</h3>
                         <p class="expenses">R$ 0,00</p>
+                        <small class="trend negative">+2% em relação ao período anterior</small>
+                    </div>
+
+                    <div class="card">
+                        <h3>Investimentos</h3>
+                        <p class="investments">R$ 0,00</p>
+                        <small class="trend positive investments-trend">+8% total</small>
                     </div>
                 </div>
 
                 <div class="charts-container">
                     <div class="chart-card">
-                        <h3>Evolução do Saldo</h3>
+                        <h3>Evolução do Patrimônio</h3>
                         <canvas id="balanceChart"></canvas>
                     </div>
                     <div class="chart-card">
@@ -77,18 +104,260 @@
                 </div>
             </section>
 
-            <section id="daily" class="page">
-                <h2>Visão Diária</h2>
-                <!-- Conteúdo da visão diária será adicionado depois -->
+            <!-- Seção de Cartões -->
+            <section id="cards" class="page">
+                <div class="section-header">
+                    <h2>Cartões</h2>
+                    <button class="action-btn primary" onclick="openCardModal()">
+                        <i class="fas fa-plus"></i> Novo Cartão
+                    </button>
+                </div>
+                <div id="cardsList" class="cards-grid">
+                    <!-- Cards serão inseridos aqui via JavaScript -->
+                </div>
             </section>
 
-            <section id="monthly" class="page">
-                <h2>Visão Mensal</h2>
-                <!-- Conteúdo da visão mensal será adicionado depois -->
+            <!-- Seção de Investimentos -->
+            <section id="investments" class="page">
+                <div class="section-header">
+                    <h2>Investimentos</h2>
+                    <button class="action-btn primary" onclick="openInvestmentModal()">
+                        <i class="fas fa-plus"></i> Novo Investimento
+                    </button>
+                </div>
+                <div class="investment-summary">
+                    <div class="cards">
+                        <div class="card">
+                            <h3>Total Investido</h3>
+                            <p class="balance" id="totalInvested">R$ 0,00</p>
+                            <small class="trend positive">Rendimento total: <span id="totalReturn">0,00%</span></small>
+                        </div>
+                        <div class="card">
+                            <h3>Rendimento Mensal</h3>
+                            <p class="income" id="monthlyReturn">R$ 0,00</p>
+                            <small>Mês atual</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="investments-list">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Investimento</th>
+                                <th>Tipo</th>
+                                <th>Valor Atual</th>
+                                <th>Rentabilidade</th>
+                                <th>Vencimento</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="investmentsTable">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <!-- Seção de Metas -->
+            <section id="goals" class="page">
+                <div class="section-header">
+                    <h2>Metas</h2>
+                    <button class="action-btn primary" onclick="openGoalModal()">
+                        <i class="fas fa-plus"></i> Nova Meta
+                    </button>
+                </div>
+                <div id="goalsList" class="goals-grid">
+                    <!-- Metas serão inseridas aqui via JavaScript -->
+                </div>
             </section>
         </main>
     </div>
 
+    <!-- Modal de Transação -->
+    <div id="transactionModal" class="modal">
+        <div class="modal-content">
+            <h3>Nova Transação</h3>
+            <form id="transactionForm">
+                <div class="form-group">
+                    <label>Descrição:</label>
+                    <input type="text" id="description" required>
+                </div>
+                <div class="form-group">
+                    <label>Valor:</label>
+                    <input type="number" id="amount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Tipo:</label>
+                    <select id="type" required>
+                        <option value="income">Receita</option>
+                        <option value="expense">Despesa</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Categoria:</label>
+                    <select id="category" required>
+                        <option value="salary">Salário</option>
+                        <option value="food">Alimentação</option>
+                        <option value="transport">Transporte</option>
+                        <option value="housing">Moradia</option>
+                        <option value="others">Outros</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button type="submit">Salvar</button>
+                    <button type="button" onclick="closeTransactionModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Cartão de Crédito -->
+    <div id="creditCardExpenseModal" class="modal">
+        <div class="modal-content">
+            <h3>Nova Despesa no Cartão</h3>
+            <form id="creditCardExpenseForm">
+                <div class="form-group">
+                    <label>Cartão:</label>
+                    <select id="creditCardSelect" required>
+                        <!-- Será preenchido via JavaScript -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição:</label>
+                    <input type="text" id="ccExpenseDescription" required>
+                </div>
+                <div class="form-group">
+                    <label>Valor:</label>
+                    <input type="number" id="ccExpenseAmount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Categoria:</label>
+                    <select id="ccExpenseCategory" required>
+                        <option value="food">Alimentação</option>
+                        <option value="transport">Transporte</option>
+                        <option value="shopping">Compras</option>
+                        <option value="entertainment">Entretenimento</option>
+                        <option value="health">Saúde</option>
+                        <option value="education">Educação</option>
+                        <option value="others">Outros</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Número de Parcelas:</label>
+                    <input type="number" id="ccInstallments" min="1" value="1" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit">Salvar</button>
+                    <button type="button" onclick="closeCreditCardExpenseModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Modal de Investimento -->
+    <div id="investmentModal" class="modal">
+        <div class="modal-content">
+            <h3>Novo Investimento</h3>
+            <form id="investmentForm">
+                <div class="form-group">
+                    <label>Tipo de Investimento:</label>
+                    <select id="investmentType" required onchange="updateInvestmentFields()">
+                        <option value="cdb">CDB</option>
+                        <option value="tesouro">Tesouro Direto</option>
+                        <option value="poupanca">Poupança</option>
+                        <option value="fundo">Fundo de Investimento</option>
+                        <option value="acoes">Ações</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nome/Descrição:</label>
+                    <input type="text" id="investmentName" required>
+                </div>
+                <div class="form-group">
+                    <label>Valor Investido:</label>
+                    <input type="number" id="investmentAmount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Data do Investimento:</label>
+                    <input type="date" id="investmentDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Rentabilidade (% ao ano):</label>
+                    <input type="number" id="investmentRate" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Prazo de Vencimento:</label>
+                    <input type="date" id="investmentMaturity" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit">Salvar</button>
+                    <button type="button" onclick="closeInvestmentModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Cartão -->
+    <div id="cardModal" class="modal">
+        <div class="modal-content">
+            <h3>Novo Cartão</h3>
+            <form id="cardForm">
+                <div class="form-group">
+                    <label>Nome do Cartão:</label>
+                    <input type="text" id="cardName" required>
+                </div>
+                <div class="form-group">
+                    <label>Limite:</label>
+                    <input type="number" id="cardLimit" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Data de Fechamento:</label>
+                    <input type="number" id="closingDay" min="1" max="31" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit">Salvar</button>
+                    <button type="button" onclick="closeCardModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Meta -->
+    <div id="goalModal" class="modal">
+        <div class="modal-content">
+            <h3>Nova Meta</h3>
+            <form id="goalForm">
+                <div class="form-group">
+                    <label>Descrição da Meta:</label>
+                    <input type="text" id="goalDescription" required>
+                </div>
+                <div class="form-group">
+                    <label>Valor Total:</label>
+                    <input type="number" id="goalAmount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Data Limite:</label>
+                    <input type="date" id="goalDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Categoria:</label>
+                    <select id="goalCategory" required>
+                        <option value="savings">Poupança</option>
+                        <option value="investment">Investimento</option>
+                        <option value="purchase">Compra</option>
+                        <option value="travel">Viagem</option>
+                        <option value="others">Outros</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button type="submit">Salvar</button>
+                    <button type="button" onclick="closeGoalModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Container de Notificações -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <!-- JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
